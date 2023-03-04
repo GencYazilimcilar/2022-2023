@@ -1,3 +1,4 @@
+# Projeyi clone ettikten sonra "npm install" komutunu proje dizininde çalıştırmayı unutmayın...
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
