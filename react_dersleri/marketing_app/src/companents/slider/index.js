@@ -3,6 +3,7 @@ import React from 'react'
 export default function Slider(props) {
     let kategories=props.kategories;
     let selectedMenuItem=props.selectedMenuItem;
+    
   return (
     <div>
         <ul className='list-group'>
