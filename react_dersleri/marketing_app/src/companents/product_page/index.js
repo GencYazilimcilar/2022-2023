@@ -1,28 +1,14 @@
-import React, { useEffect } from 'react'
-import {useParams} from 'react-router-dom';
-import {getData} from '../data';
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import CardConsumer from "../contextApi/cardContextApi";
+import { getData } from "../data";
+import Navi from "../navi";
 export default function Index(props) {
-    let {productId} = useParams();
-    const [product,setProduct]=React.useState();
-    const getDataFunk=async()=>{
-        let data=await getData('http://localhost:3005/products');
-        if(data){
-          setProduct(data);
-        }
-      }
-    useEffect(()=>{
-        getDataFunk();
-    },[]);
-    const getContent=()=>{
-        return(
-            <div></div>
-        );
-    }
+  let { productId } = useParams();
+  const [product, setProduct] = React.useState();
   return (
-    <div>
-        {
-            (productId && product)?getContent:<div>Yükleniyor...</div>
-        }
-    </div>
-  )
+    <>
+      <Navi/>
+    </>
+  );
 }
