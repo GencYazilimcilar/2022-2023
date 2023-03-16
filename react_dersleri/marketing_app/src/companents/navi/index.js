@@ -5,10 +5,12 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import CardConsumer from "../contextApi/cardContextApi";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, logout } from "../root/firebase_config";
 function Navi() {
+  const [user] = useAuthState(auth);
   const [localCard, setLocalCard] = React.useState(undefined);
   const [control, setControl] = React.useState(false);
   React.useEffect(() => {
@@ -95,6 +97,19 @@ function Navi() {
                     />
                     <Button variant="outline-success">Search</Button>
                   </Form>
+                  {user ? (
+                    <Navbar.Brand className="mx-3">
+                      <Button onClick={()=>{logout()}}>Çıkış Yap</Button>
+                    </Navbar.Brand>
+                  ) : (
+                    <Link
+                      to="/login"
+                      className="mx-3"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Navbar.Brand>Giriş Yap</Navbar.Brand>
+                    </Link>
+                  )}
                 </Nav>
               </Navbar.Collapse>
             </Container>

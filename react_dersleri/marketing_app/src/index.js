@@ -2,20 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  RouterProvider,
-} from "react-router-dom";
-import {router} from "./companents/router/index.js";
 import { ProductsProvider } from "./companents/contextApi/productsContextApi.js";
 import { CardProvider } from "./companents/contextApi/cardContextApi.js";
+import App from "./companents/root/App";
+import { BrowserRouter } from "react-router-dom";
+import 'alertifyjs/build/css/alertify.min.css';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ProductsProvider>
-      <CardProvider>
-        <RouterProvider router={router} />  
-      </CardProvider>
-    </ProductsProvider>
+    <BrowserRouter>
+      <ProductsProvider>
+        <CardProvider>
+          <App />
+        </CardProvider>
+      </ProductsProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
