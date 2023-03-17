@@ -4,8 +4,12 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "DELETE_CARD":
       return { ...state, card: [] };
-    case 'SET_CARD_CONTROL':
-      return { ...state, cardControl: action.payload};
+    case "SET_CARD_CONTROL":
+      return { ...state, cardControl: action.payload };
+    case "SET_CARD_CONTROL2":
+      return { ...state, cardControl2: action.payload };
+    case "SET_LOCAL_CARD":
+      return { ...state, localCard: action.payload };
     default:
       return { ...state };
   }
@@ -13,7 +17,9 @@ const reducer = (state, action) => {
 export class CardProvider extends Component {
   state = {
     card: [],
-    cardControl:false,
+    localCard: [],
+    cardControl: false,
+    cardControl2: false,
     addToCard: (product) => this.addToCard(product),
     deleteToCard: (product) => this.deleteToCard(product),
     dispatch: (action) => {
@@ -23,7 +29,7 @@ export class CardProvider extends Component {
   addToCard = (product) => {
     this.setState({
       card: [...this.state.card, product],
-      cardControl:true,
+      cardControl: true,
     });
   };
   deleteToCard = (product) => {
@@ -35,7 +41,7 @@ export class CardProvider extends Component {
         return;
       }
     });
-    this.setState({ card: card ,cardControl:true});
+    this.setState({ card: card, cardControl: true });
   };
   render() {
     return (

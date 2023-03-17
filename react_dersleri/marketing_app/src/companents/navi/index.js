@@ -9,10 +9,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../root/firebase_config";
+import { useNavigate } from "react-router-dom";
 function Navi() {
   const [user] = useAuthState(auth);
   const [localCard, setLocalCard] = React.useState(undefined);
   const [control, setControl] = React.useState(false);
+  let navigate = useNavigate();
   React.useEffect(() => {
     setControl(!control);
   }, []);
@@ -34,11 +36,17 @@ function Navi() {
         return (
           <Navbar bg="dark" expand="lg" variant="dark" sticky="top">
             <Container>
-              <Navbar.Brand>Marketing</Navbar.Brand>
+              <Navbar.Brand
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Marketing
+              </Navbar.Brand>
               {(cardControl || control) && setCard(card, dispatch)}
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto justify-content-end flex-grow-1 pe-3 ">
+                <Nav className="me-auto flex-grow-1 pe-3  justify-content-end">
                   {card.length > 0 && localCard != undefined && (
                     <NavDropdown
                       title="Card"
@@ -67,7 +75,9 @@ function Navi() {
                         <div className="row">
                           <div className="col-md-5">
                             <button
-                              onClick={() => {}}
+                              onClick={() => {
+                                navigate("/card-details");
+                              }}
                               className="btn btn-primary"
                             >
                               Card
@@ -99,7 +109,13 @@ function Navi() {
                   </Form>
                   {user ? (
                     <Navbar.Brand className="mx-3">
-                      <Button onClick={()=>{logout()}}>Çıkış Yap</Button>
+                      <Button
+                        onClick={() => {
+                          logout();
+                        }}
+                      >
+                        Çıkış Yap
+                      </Button>
                     </Navbar.Brand>
                   ) : (
                     <Link
