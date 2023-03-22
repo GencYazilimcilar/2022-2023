@@ -4,12 +4,7 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "DELETE_CARD":
       return { ...state, card: [] };
-    case "SET_CARD_CONTROL":
-      return { ...state, cardControl: action.payload };
-    case "SET_CARD_CONTROL2":
-      return { ...state, cardControl2: action.payload };
-    case "SET_LOCAL_CARD":
-      return { ...state, localCard: action.payload };
+
     default:
       return { ...state };
   }
@@ -17,9 +12,6 @@ const reducer = (state, action) => {
 export class CardProvider extends Component {
   state = {
     card: [],
-    localCard: [],
-    cardControl: false,
-    cardControl2: false,
     addToCard: (product) => this.addToCard(product),
     deleteToCard: (product) => this.deleteToCard(product),
     dispatch: (action) => {
@@ -27,21 +19,36 @@ export class CardProvider extends Component {
     },
   };
   addToCard = (product) => {
-    this.setState({
-      card: [...this.state.card, product],
-      cardControl: true,
-    });
+    if (this.state.card.length === 0) {
+      this.setState({ card: [{ ...product, count: 1 }] });
+    } else if (
+      this.state.card.filter((item) => item.id === product.id).length > 0
+    ) {
+      let card = this.state.card.map((item) => {
+        if (item.id === product.id) {
+          let count = item.count ?? 0;
+          let newItem = { ...item, count: count + 1 };
+          return newItem;
+        } else {
+          return item;
+        }
+      });
+      this.setState({ card: card });
+    } else {
+      this.setState({ card: [...this.state.card, { ...product, count: 1 }] });
+    }
   };
   deleteToCard = (product) => {
     const card = this.state.card;
     card.forEach((item) => {
-      if (item.id == product.id) {
+      if (item.id === product.id) {
         const index = card.indexOf(item);
         card.splice(index, 1);
+        this.setState({ card: [...this.state.card] });
         return;
       }
     });
-    this.setState({ card: card, cardControl: true });
+    this.setState({ card: card });
   };
   render() {
     return (

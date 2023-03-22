@@ -6,21 +6,30 @@ function Home() {
   return (
     <ProductsConsumer>
       {(values) => {
-        const { products, categories, dispatch } = values;
-        if (products.length === 0) {
-          console.log("Ürünler boş");
-        }
+        const { products, categories } = values;
         return (
-          <div>
-            <div className="row px-5 py-4">
-              <div className="col-md-3 my-3">
-                <Slider />
+          <>
+            {products.length > 0 && categories.length > 0 ? (
+              <div className="row px-5 py-4">
+                <div className="col-md-3 my-3">
+                  <Slider />
+                </div>
+                <div className="col-md-9 my-3">
+                  <Content />
+                </div>
               </div>
-              <div className="col-md-9 my-3">
-                <Content />
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <h3>Loading...</h3>
               </div>
-            </div>
-          </div>
+            )}
+          </>
         );
       }}
     </ProductsConsumer>

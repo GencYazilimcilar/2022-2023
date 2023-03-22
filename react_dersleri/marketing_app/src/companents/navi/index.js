@@ -12,27 +12,11 @@ import { auth, logout } from "../root/firebase_config";
 import { useNavigate } from "react-router-dom";
 function Navi() {
   const [user] = useAuthState(auth);
-  const [localCard, setLocalCard] = React.useState(undefined);
-  const [control, setControl] = React.useState(false);
   let navigate = useNavigate();
-  React.useEffect(() => {
-    setControl(!control);
-  }, []);
-  const setCard = (card, dispatch) => {
-    let gecici = {};
-    card.forEach((item) => {
-      let count =
-        gecici[item.title] !== undefined ? gecici[item.title].count + 1 : 1;
-      gecici[item.title] = { ...item, count: count };
-    });
-    setLocalCard(gecici);
-    dispatch({ type: "SET_CARD_CONTROL", payload: false });
-    setControl(false);
-  };
   return (
     <CardConsumer>
       {(values) => {
-        const { card, cardControl, dispatch } = values;
+        const { card, dispatch } = values;
         return (
           <Navbar bg="dark" expand="lg" variant="dark" sticky="top">
             <Container>
@@ -43,29 +27,28 @@ function Navi() {
               >
                 Marketing
               </Navbar.Brand>
-              {(cardControl || control) && setCard(card, dispatch)}
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto flex-grow-1 pe-3  justify-content-end">
-                  {card.length > 0 && localCard != undefined && (
+                  {card.length > 0 && (
                     <NavDropdown
                       title="Card"
                       id="basic-nav-dropdown"
                       className="mx-5"
                     >
-                      {Object.keys(localCard).map((item) => (
+                      {Object.keys(card).map((item) => (
                         <>
                           <NavDropdown.Item>
                             <Link
-                              to={"/product/" + localCard[item].id}
+                              to={"/product/" + card[item].id}
                               style={{ textDecoration: "none", color: "black" }}
                             >
-                              {localCard[item].count > 1 && (
+                              {card[item].count > 1 && (
                                 <span className="badge text-bg-success mx-1">
-                                  {localCard[item].count}
+                                  {card[item].count}
                                 </span>
                               )}
-                              {localCard[item].title}
+                              {card[item].title}
                             </Link>
                           </NavDropdown.Item>
                           <NavDropdown.Divider />
@@ -87,7 +70,6 @@ function Navi() {
                             <button
                               onClick={() => {
                                 dispatch({ type: "DELETE_CARD" });
-                                setLocalCard(undefined);
                               }}
                               className="btn btn-danger"
                             >

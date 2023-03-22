@@ -1,5 +1,6 @@
+import { onValue, ref } from "firebase/database";
 import React, { Component } from "react";
-
+import { db } from "../root/firebase_config";
 const ProcustsContext = React.createContext();
 const reducer = (state, action) => {
   switch (action.type) {
@@ -20,17 +21,25 @@ export class ProductsProvider extends Component {
     categories: [],
     selectedMenuItem: undefined,
     getCategories: () => this.getCategories(),
+    getData: () => this.getData(),
     dispatch: async (action) => {
       this.setState((state) => reducer(state, action));
     },
   };
-  getCategories() {
+  getData = () => {
+    let referans = ref(db, "/products");
+    onValue(referans, (snapshot) => {
+      let data = snapshot.val();
+      this.setState({ products: [...data] });
+    });
+  };
+  getCategories = () => {
     let gecici = [];
     this.state.products.forEach((item) => {
       let currentItemCategory = item.category;
       let control = false;
       gecici.forEach((item) => {
-        if (item == currentItemCategory) {
+        if (item === currentItemCategory) {
           control = true;
         }
       });
@@ -44,7 +53,7 @@ export class ProductsProvider extends Component {
       len = gecici.length;
       this.setState({ selectedMenuItem: gecici[0] });
     }
-  }
+  };
   render() {
     return (
       <ProcustsContext.Provider value={this.state}>
